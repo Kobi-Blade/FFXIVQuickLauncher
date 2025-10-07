@@ -98,7 +98,7 @@ namespace XIVLauncher.Windows
             if (EnvironmentSettings.IsDisableUpdates)
 #endif
             {
-                Title += " - UNSUPPORTED VERSION - NO UPDATES - COULD DO BAD THINGS";
+                //Title += " - UNSUPPORTED VERSION - NO UPDATES - COULD DO BAD THINGS";
             }
 
 #if DEBUG

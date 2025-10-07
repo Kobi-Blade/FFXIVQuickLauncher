@@ -160,7 +160,7 @@ namespace XIVLauncher.Windows
             if (!(AccountListView.SelectedItem is AccountSwitcherEntry selectedEntry))
                 return;
 
-            var thumbnailPath = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var thumbnailPath = Path.Combine(AppContext.BaseDirectory, "XIVLauncher.exe");
 
             if (!string.IsNullOrEmpty(selectedEntry.Account.ThumbnailUrl))
             {
