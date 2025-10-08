@@ -1,0 +1,40 @@
+name: Build XIV Launcher
+
+on:
+  workflow_dispatch:
+  
+env:
+  BUILD_CONFIGURATION: ReleaseNoUpdate
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          submodules: recursive
+          persist-credentials: false
+      
+      - name: Publish XIV Launcher
+        run: |
+          cd src/XIVLauncher
+          dotnet publish --configuration ${{ env.BUILD_CONFIGURATION }} --os win --no-self-contained -p:PublishSingleFile=true
+          
+      - name: Publish XIV Launcher Patcher
+        run: |
+          cd src/XIVLauncher.PatchInstaller
+          dotnet publish --output ../XIVLauncher/bin/${{ env.BUILD_CONFIGURATION }}/win-x64/publish/patcher --os win --no-self-contained -p:PublishSingleFile=true
+          
+      - name: Generate Hashes File
+        run: ./scripts/CreateHashList.ps1 ./src/XIVLauncher/bin/${{ env.BUILD_CONFIGURATION }}/win-x64/publish/
+        
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ github.sha }}
+          path: src/XIVLauncher/bin/${{ env.BUILD_CONFIGURATION }}/win-x64/publish/
