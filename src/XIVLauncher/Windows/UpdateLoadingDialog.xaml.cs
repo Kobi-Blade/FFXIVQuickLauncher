@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Input;
 using XIVLauncher.Windows.ViewModel;
 
@@ -16,7 +16,8 @@ namespace XIVLauncher.Windows
             AutoLoginDisclaimer.Visibility = App.Settings.AutologinEnabled ? Visibility.Visible : Visibility.Collapsed;
             ResetUidCacheDisclaimer.Visibility = App.Settings.UniqueIdCacheEnabled ? Visibility.Visible : Visibility.Collapsed;
             if (ResetUidCacheDisclaimer.Visibility == Visibility.Visible
-                && AutoLoginDisclaimer.Visibility == Visibility.Visible) {
+                && AutoLoginDisclaimer.Visibility == Visibility.Visible)
+            {
                 UpdateLoadingCard.Height += 19;
             }
 

@@ -1,3 +1,5 @@
+using Serilog;
+using Serilog.Events;
 using System;
 using System.CommandLine;
 using System.CommandLine.Parsing;
@@ -6,8 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
-using Serilog.Events;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Patching;
 using XIVLauncher.Common.Patching.Rpc.Implementations;

@@ -1,12 +1,12 @@
-﻿using System;
+using CheapLoc;
+using Microsoft.Win32;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using CheapLoc;
-using Microsoft.Win32;
-using Serilog;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Util;
 using XIVLauncher.Windows;

@@ -1,9 +1,9 @@
+using Serilog;
+using Serilog.Events;
 using System.CommandLine;
 using System.CommandLine.Parsing;
 using System.IO;
 using System.Threading.Tasks;
-using Serilog;
-using Serilog.Events;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Patching.IndexedZiPatch;
 

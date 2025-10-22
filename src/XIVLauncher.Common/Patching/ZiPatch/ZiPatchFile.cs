@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using XIVLauncher.Common.Patching.ZiPatch.Util;
 using XIVLauncher.Common.Patching.ZiPatch.Chunk;
+using XIVLauncher.Common.Patching.ZiPatch.Util;
 
 namespace XIVLauncher.Common.Patching.ZiPatch
 {

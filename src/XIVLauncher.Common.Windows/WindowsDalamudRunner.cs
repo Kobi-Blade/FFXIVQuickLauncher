@@ -1,14 +1,14 @@
-﻿using System;
+using Microsoft.Win32.SafeHandles;
+using Newtonsoft.Json;
+using PInvoke;
+using Serilog;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using Microsoft.Win32.SafeHandles;
-using Newtonsoft.Json;
-using PInvoke;
-using Serilog;
 using XIVLauncher.Common.Dalamud;
 using XIVLauncher.Common.PlatformAbstractions;
 

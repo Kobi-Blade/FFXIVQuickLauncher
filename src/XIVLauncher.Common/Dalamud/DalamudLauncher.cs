@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using Newtonsoft.Json;
+using Serilog;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Common.PlatformAbstractions;
 
 namespace XIVLauncher.Common.Dalamud

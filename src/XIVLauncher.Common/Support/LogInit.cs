@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using CommandLine;
 using Serilog;
 using Serilog.Enrichers.Sensitive;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace XIVLauncher.Common.Support;
 

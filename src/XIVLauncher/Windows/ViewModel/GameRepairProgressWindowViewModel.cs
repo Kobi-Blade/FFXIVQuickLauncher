@@ -1,6 +1,6 @@
-﻿using System;
-using System.Windows.Input;
 using CheapLoc;
+using System;
+using System.Windows.Input;
 
 namespace XIVLauncher.Windows.ViewModel
 {

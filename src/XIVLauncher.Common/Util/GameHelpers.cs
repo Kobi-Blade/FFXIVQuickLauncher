@@ -24,7 +24,7 @@ public static class GameHelpers
         return Directory.Exists(Path.Combine(path, "game")) && Directory.Exists(Path.Combine(path, "boot"));
     }
 
-    public static bool CanMightNotBeInternationalClient(string path) 
+    public static bool CanMightNotBeInternationalClient(string path)
     {
         if (Directory.Exists(Path.Combine(path, "sdo")))
             return true;

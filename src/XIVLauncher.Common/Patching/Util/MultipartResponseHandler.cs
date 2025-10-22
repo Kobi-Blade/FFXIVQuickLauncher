@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -96,7 +96,7 @@ namespace XIVLauncher.Common.Patching.Util
                         continue;
 
                     var isEmptyLine = i == 0;
-                    
+
                     if (isEmptyLine)
                         this.multipartBufferStream.Consume(null, 0, 2);
                     else

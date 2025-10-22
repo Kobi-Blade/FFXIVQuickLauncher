@@ -1,6 +1,6 @@
-﻿using System;
-using System.IO;
 using Serilog;
+using System;
+using System.IO;
 using XIVLauncher.Common.Patching.Util;
 
 namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
@@ -11,7 +11,7 @@ namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
 
         public string DirName { get; protected set; }
 
-        public DeleteDirectoryChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) {}
+        public DeleteDirectoryChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) { }
 
         protected override void ReadChunk()
         {

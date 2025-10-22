@@ -1,8 +1,8 @@
+using Serilog;
+using Serilog.Events;
 using System;
 using System.IO;
 using System.Windows;
-using Serilog;
-using Serilog.Events;
 using Velopack;
 using Velopack.Logging;
 using XIVLauncher.Common;

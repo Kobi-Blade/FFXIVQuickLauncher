@@ -1,4 +1,7 @@
-﻿using System;
+using AriaNet;
+using AriaNet.Attributes;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -7,9 +10,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AriaNet;
-using AriaNet.Attributes;
-using Serilog;
 using XIVLauncher.Common.Util;
 
 namespace XIVLauncher.Common.Game.Patch.Acquisition.Aria

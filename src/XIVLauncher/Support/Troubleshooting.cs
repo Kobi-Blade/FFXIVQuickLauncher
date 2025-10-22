@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Dalamud;
 using XIVLauncher.Common.Game;
@@ -31,7 +31,7 @@ namespace XIVLauncher.Support
 
             try
             {
-                var fixedContext = context?.Split(new []{'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
+                var fixedContext = context?.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).FirstOrDefault();
 
                 var payload = new ExceptionPayload
                 {

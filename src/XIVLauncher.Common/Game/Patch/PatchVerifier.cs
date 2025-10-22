@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,8 +12,6 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Common.Game.Exceptions;
 using XIVLauncher.Common.Patching.IndexedZiPatch;
 using XIVLauncher.Common.Patching.Util;
@@ -256,7 +256,7 @@ namespace XIVLauncher.Common.Game.Patch
                         continue;
 
                     var relativePath = subdir.FullName.Substring(gamePath.Length + 1).Replace('\\', '/') + "/";
-                    
+
                     if (GameIgnoreUnnecessaryFilePatterns.Any(x => x.IsMatch(relativePath)))
                         continue;
 

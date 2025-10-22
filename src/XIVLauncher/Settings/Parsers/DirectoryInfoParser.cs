@@ -1,7 +1,7 @@
-﻿using System;
+using Config.Net;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Config.Net;
 
 namespace XIVLauncher.Settings.Parsers
 {

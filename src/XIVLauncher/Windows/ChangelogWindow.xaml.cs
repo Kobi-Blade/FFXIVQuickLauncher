@@ -1,10 +1,10 @@
-﻿using System;
+using Newtonsoft.Json;
+using Serilog;
+using System;
 using System.Media;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Support;
 using XIVLauncher.Windows.ViewModel;
 
@@ -71,7 +71,7 @@ namespace XIVLauncher.Windows
         {
             Close();
         }
-        
+
         public new void Show()
         {
             SystemSounds.Asterisk.Play();
@@ -83,10 +83,10 @@ namespace XIVLauncher.Windows
         public new void ShowDialog()
         {
             base.ShowDialog();
-            
+
             LoadChangelog();
         }
-        
+
         private void LoadChangelog()
         {
             var _ = Task.Run(async () =>

@@ -1,11 +1,11 @@
-﻿using System.IO;
+using System.IO;
 using System.Text;
 
 namespace XIVLauncher.Common.Patching.ZiPatch.Util
 {
     class SqpackDatFile : SqpackFile
     {
-        public SqpackDatFile(BinaryReader reader) : base(reader) {}
+        public SqpackDatFile(BinaryReader reader) : base(reader) { }
 
 
         protected override string GetFileName(ZiPatchConfig.PlatformId platform) =>

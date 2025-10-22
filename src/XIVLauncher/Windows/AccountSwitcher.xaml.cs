@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -97,7 +97,7 @@ namespace XIVLauncher.Windows
 
         private Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
-            using(MemoryStream outStream = new MemoryStream())
+            using (MemoryStream outStream = new MemoryStream())
             {
                 BitmapEncoder enc = new BmpBitmapEncoder();
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));

@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using XIVLauncher.Common.Patching.Util;
 
 namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
@@ -25,7 +25,7 @@ namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
         public uint SqpkHeaderCommands { get; protected set; }
         public uint SqpkFileCommands { get; protected set; }
 
-        public FileHeaderChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) {}
+        public FileHeaderChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) { }
 
         protected override void ReadChunk()
         {

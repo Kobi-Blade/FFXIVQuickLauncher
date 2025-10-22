@@ -1,7 +1,7 @@
-﻿using System.IO;
+using Serilog;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Serilog;
 using XIVLauncher.Common.Util;
 
 namespace XIVLauncher.Common.Unix.Compatibility;

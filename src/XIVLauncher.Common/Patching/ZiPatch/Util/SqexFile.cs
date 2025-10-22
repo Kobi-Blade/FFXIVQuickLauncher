@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -9,7 +9,7 @@ namespace XIVLauncher.Common.Patching.ZiPatch.Util
     {
         public string RelativePath { get; set; }
 
-        protected SqexFile() {}
+        protected SqexFile() { }
 
         public SqexFile(string relativePath)
         {

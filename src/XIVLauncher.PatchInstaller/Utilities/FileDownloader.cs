@@ -1,3 +1,4 @@
+using Serilog;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -9,7 +10,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Serilog;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Game.Exceptions;
 
@@ -125,7 +125,8 @@ public class FileDownloader
                         stream = null;
 
                         break;
-                    } finally
+                    }
+                    finally
                     {
                         response?.Dispose();
                         stream?.Dispose();
@@ -173,7 +174,8 @@ public class FileDownloader
                         this.fragments.Insert(largestGap + 1, new(this, response, stream, fragStart, fragEnd));
                         response = null;
                         stream = null;
-                    } finally
+                    }
+                    finally
                     {
                         response?.Dispose();
                         stream?.Dispose();
@@ -181,7 +183,8 @@ public class FileDownloader
                         stream = null;
                     }
                 }
-            } finally
+            }
+            finally
             {
                 foreach (var f in this.fragments)
                     await f.DisposeAsync();
@@ -209,7 +212,8 @@ public class FileDownloader
             }
 
             throw;
-        } finally
+        }
+        finally
         {
             foreach (var f in this.fragments)
                 await f.DisposeAsync();
