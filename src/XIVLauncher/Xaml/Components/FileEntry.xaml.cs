@@ -1,6 +1,6 @@
-﻿using System.Windows;
-using System.Windows.Data;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Windows;
+using System.Windows.Data;
 
 namespace XIVLauncher.Xaml.Components
 {

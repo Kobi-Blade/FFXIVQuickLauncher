@@ -1,9 +1,9 @@
-﻿using System;
+using CheapLoc;
+using System;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
-using CheapLoc;
 using XIVLauncher.Common.PlatformAbstractions;
 using XIVLauncher.Common.Util;
 using XIVLauncher.Windows.ViewModel;
@@ -78,7 +78,7 @@ namespace XIVLauncher.Windows
                 // TODO(goat): this is real bad, just do it any other way that doesn't possibly block
                 if (_progress == IDalamudLoadingOverlay.DalamudUpdateStep.Unavailable)
                 {
-                    var t = new Timer(15000) {AutoReset = false};
+                    var t = new Timer(15000) { AutoReset = false };
 
                     t.Elapsed += (_, _) =>
                     {

@@ -1,11 +1,11 @@
+using Microsoft.Win32;
+using Serilog;
+using Steamworks;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Win32;
-using Serilog;
-using Steamworks;
 using XIVLauncher.Common.Game.Exceptions;
 using XIVLauncher.Common.PlatformAbstractions;
 

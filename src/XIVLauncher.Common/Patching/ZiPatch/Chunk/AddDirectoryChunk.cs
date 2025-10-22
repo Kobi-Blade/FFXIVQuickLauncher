@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using XIVLauncher.Common.Patching.Util;
 
 namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
@@ -18,7 +18,7 @@ namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
         }
 
 
-        public AddDirectoryChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) {}
+        public AddDirectoryChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) { }
 
         public override void ApplyChunk(ZiPatchConfig config)
         {

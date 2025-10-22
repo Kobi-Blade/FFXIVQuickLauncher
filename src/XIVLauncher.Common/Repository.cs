@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 
@@ -71,7 +71,7 @@ namespace XIVLauncher.Common
             if (!verFile.Exists)
                 return Constants.BASE_GAME_VERSION;
 
-            var ver =  File.ReadAllText(verFile.FullName);
+            var ver = File.ReadAllText(verFile.FullName);
             return string.IsNullOrWhiteSpace(ver) ? Constants.BASE_GAME_VERSION : ver;
         }
 

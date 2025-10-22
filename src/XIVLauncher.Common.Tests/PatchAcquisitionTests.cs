@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -21,7 +21,7 @@ namespace XIVLauncher.Common.Tests
             Length = 0x00000000596279e7,
             Url = "http://patch-dl.ffxiv.com/game/4e9a232b/H2017.06.06.0000.0001a.patch",
             VersionId = "H2017.06.06.0000.0001a",
-            Hashes = new []
+            Hashes = new[]
             {
                 "5b4e55eb5036e3230d436012a0a98bc9da855d11",
                 "61f38e1688359b75fb2de29c2560b0f2ab84a10c",

@@ -1,3 +1,4 @@
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
@@ -7,7 +8,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Serilog;
 using XIVLauncher.Common.Patching.IndexedZiPatch;
 
 namespace XIVLauncher.PatchInstaller.Commands;

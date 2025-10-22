@@ -1,4 +1,4 @@
-﻿using AdysTech.CredentialManager;
+using AdysTech.CredentialManager;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Net;
@@ -32,7 +32,7 @@ namespace XIVLauncher.Accounts
                         Password = credentials.Password,
                     });
 
-                    if (saved)
+                    if (saved != null)
                     {
                         try
                         {

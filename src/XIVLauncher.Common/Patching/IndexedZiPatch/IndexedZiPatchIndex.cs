@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -144,12 +144,12 @@ public class IndexedZiPatchIndex
                 switch (patchChunk)
                 {
                     case DeleteDirectoryChunk deleteDirectoryChunk:
-                    {
-                        var prefix = NormalizePath(deleteDirectoryChunk.DirName.ToLowerInvariant());
-                        this.targetFiles.RemoveAll(x => x.RelativePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
-                        this.ReassignTargetIndices();
-                        break;
-                    }
+                        {
+                            var prefix = NormalizePath(deleteDirectoryChunk.DirName.ToLowerInvariant());
+                            this.targetFiles.RemoveAll(x => x.RelativePath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+                            this.ReassignTargetIndices();
+                            break;
+                        }
 
                     case SqpkTargetInfo sqpkTargetInfo:
                         platform = sqpkTargetInfo.Platform;
@@ -220,107 +220,107 @@ public class IndexedZiPatchIndex
                         break;
 
                     case SqpkAddData sqpkAddData:
-                    {
-                        sqpkAddData.TargetFile.ResolvePath(platform);
-                        var (targetIndex, file) = this.AllocFile(sqpkAddData.TargetFile.RelativePath);
-                        file.Update(new()
                         {
-                            TargetOffset = sqpkAddData.BlockOffset,
-                            TargetSize = sqpkAddData.BlockNumber,
-                            TargetIndex = targetIndex,
-                            SourceIndex = sourceIndex,
-                            SourceOffset = sqpkAddData.BlockDataSourceOffset,
-                            Crc32OrPlaceholderEntryDataUnits = (uint)(sqpkAddData.BlockNumber >> 7) - 1,
-                        });
-                        this.sourceFileLastPtr[this.sourceFileLastPtr.Count - 1] = (int)(sqpkAddData.BlockDataSourceOffset + sqpkAddData.BlockNumber);
-                        file.Update(new()
-                        {
-                            TargetOffset = sqpkAddData.BlockOffset + sqpkAddData.BlockNumber,
-                            TargetSize = sqpkAddData.BlockDeleteNumber,
-                            TargetIndex = targetIndex,
-                            SourceIndex = IndexedZiPatchPartLocator.SourceIndexZeros,
-                            Crc32OrPlaceholderEntryDataUnits = (uint)(sqpkAddData.BlockDeleteNumber >> 7) - 1,
-                        });
-                        break;
-                    }
+                            sqpkAddData.TargetFile.ResolvePath(platform);
+                            var (targetIndex, file) = this.AllocFile(sqpkAddData.TargetFile.RelativePath);
+                            file.Update(new()
+                            {
+                                TargetOffset = sqpkAddData.BlockOffset,
+                                TargetSize = sqpkAddData.BlockNumber,
+                                TargetIndex = targetIndex,
+                                SourceIndex = sourceIndex,
+                                SourceOffset = sqpkAddData.BlockDataSourceOffset,
+                                Crc32OrPlaceholderEntryDataUnits = (uint)(sqpkAddData.BlockNumber >> 7) - 1,
+                            });
+                            this.sourceFileLastPtr[this.sourceFileLastPtr.Count - 1] = (int)(sqpkAddData.BlockDataSourceOffset + sqpkAddData.BlockNumber);
+                            file.Update(new()
+                            {
+                                TargetOffset = sqpkAddData.BlockOffset + sqpkAddData.BlockNumber,
+                                TargetSize = sqpkAddData.BlockDeleteNumber,
+                                TargetIndex = targetIndex,
+                                SourceIndex = IndexedZiPatchPartLocator.SourceIndexZeros,
+                                Crc32OrPlaceholderEntryDataUnits = (uint)(sqpkAddData.BlockDeleteNumber >> 7) - 1,
+                            });
+                            break;
+                        }
 
                     case SqpkDeleteData sqpkDeleteData:
-                    {
-                        sqpkDeleteData.TargetFile.ResolvePath(platform);
-                        var (targetIndex, file) = this.AllocFile(sqpkDeleteData.TargetFile.RelativePath);
-
-                        if (sqpkDeleteData.BlockNumber > 0)
                         {
-                            file.Update(new()
-                            {
-                                TargetOffset = sqpkDeleteData.BlockOffset,
-                                TargetSize = 1 << 7,
-                                TargetIndex = targetIndex,
-                                SourceIndex = IndexedZiPatchPartLocator.SourceIndexEmptyBlock,
-                                Crc32OrPlaceholderEntryDataUnits = (uint)sqpkDeleteData.BlockNumber - 1,
-                            });
+                            sqpkDeleteData.TargetFile.ResolvePath(platform);
+                            var (targetIndex, file) = this.AllocFile(sqpkDeleteData.TargetFile.RelativePath);
 
-                            if (sqpkDeleteData.BlockNumber > 1)
+                            if (sqpkDeleteData.BlockNumber > 0)
                             {
                                 file.Update(new()
                                 {
-                                    TargetOffset = sqpkDeleteData.BlockOffset + (1 << 7),
-                                    TargetSize = (sqpkDeleteData.BlockNumber - 1) << 7,
+                                    TargetOffset = sqpkDeleteData.BlockOffset,
+                                    TargetSize = 1 << 7,
                                     TargetIndex = targetIndex,
-                                    SourceIndex = IndexedZiPatchPartLocator.SourceIndexZeros,
+                                    SourceIndex = IndexedZiPatchPartLocator.SourceIndexEmptyBlock,
+                                    Crc32OrPlaceholderEntryDataUnits = (uint)sqpkDeleteData.BlockNumber - 1,
                                 });
-                            }
-                        }
 
-                        break;
-                    }
+                                if (sqpkDeleteData.BlockNumber > 1)
+                                {
+                                    file.Update(new()
+                                    {
+                                        TargetOffset = sqpkDeleteData.BlockOffset + (1 << 7),
+                                        TargetSize = (sqpkDeleteData.BlockNumber - 1) << 7,
+                                        TargetIndex = targetIndex,
+                                        SourceIndex = IndexedZiPatchPartLocator.SourceIndexZeros,
+                                    });
+                                }
+                            }
+
+                            break;
+                        }
 
                     case SqpkExpandData sqpkExpandData:
-                    {
-                        sqpkExpandData.TargetFile.ResolvePath(platform);
-                        var (targetIndex, file) = this.AllocFile(sqpkExpandData.TargetFile.RelativePath);
-
-                        if (sqpkExpandData.BlockNumber > 0)
                         {
-                            file.Update(new()
-                            {
-                                TargetOffset = sqpkExpandData.BlockOffset,
-                                TargetSize = 1 << 7,
-                                TargetIndex = targetIndex,
-                                SourceIndex = IndexedZiPatchPartLocator.SourceIndexEmptyBlock,
-                                Crc32OrPlaceholderEntryDataUnits = (uint)sqpkExpandData.BlockNumber - 1,
-                            });
+                            sqpkExpandData.TargetFile.ResolvePath(platform);
+                            var (targetIndex, file) = this.AllocFile(sqpkExpandData.TargetFile.RelativePath);
 
-                            if (sqpkExpandData.BlockNumber > 1)
+                            if (sqpkExpandData.BlockNumber > 0)
                             {
                                 file.Update(new()
                                 {
-                                    TargetOffset = sqpkExpandData.BlockOffset + (1 << 7),
-                                    TargetSize = (sqpkExpandData.BlockNumber - 1) << 7,
+                                    TargetOffset = sqpkExpandData.BlockOffset,
+                                    TargetSize = 1 << 7,
                                     TargetIndex = targetIndex,
-                                    SourceIndex = IndexedZiPatchPartLocator.SourceIndexZeros,
+                                    SourceIndex = IndexedZiPatchPartLocator.SourceIndexEmptyBlock,
+                                    Crc32OrPlaceholderEntryDataUnits = (uint)sqpkExpandData.BlockNumber - 1,
                                 });
+
+                                if (sqpkExpandData.BlockNumber > 1)
+                                {
+                                    file.Update(new()
+                                    {
+                                        TargetOffset = sqpkExpandData.BlockOffset + (1 << 7),
+                                        TargetSize = (sqpkExpandData.BlockNumber - 1) << 7,
+                                        TargetIndex = targetIndex,
+                                        SourceIndex = IndexedZiPatchPartLocator.SourceIndexZeros,
+                                    });
+                                }
                             }
+
+                            break;
                         }
 
-                        break;
-                    }
-
                     case SqpkHeader sqpkHeader:
-                    {
-                        sqpkHeader.TargetFile.ResolvePath(platform);
-                        var (targetIndex, file) = this.AllocFile(sqpkHeader.TargetFile.RelativePath);
-                        file.Update(new()
                         {
-                            TargetOffset = sqpkHeader.HeaderKind == SqpkHeader.TargetHeaderKind.Version ? 0 : SqpkHeader.HEADER_SIZE,
-                            TargetSize = SqpkHeader.HEADER_SIZE,
-                            TargetIndex = targetIndex,
-                            SourceIndex = sourceIndex,
-                            SourceOffset = sqpkHeader.HeaderDataSourceOffset,
-                        });
-                        this.sourceFileLastPtr[this.sourceFileLastPtr.Count - 1] = (int)(sqpkHeader.HeaderDataSourceOffset + SqpkHeader.HEADER_SIZE);
-                        break;
-                    }
+                            sqpkHeader.TargetFile.ResolvePath(platform);
+                            var (targetIndex, file) = this.AllocFile(sqpkHeader.TargetFile.RelativePath);
+                            file.Update(new()
+                            {
+                                TargetOffset = sqpkHeader.HeaderKind == SqpkHeader.TargetHeaderKind.Version ? 0 : SqpkHeader.HEADER_SIZE,
+                                TargetSize = SqpkHeader.HEADER_SIZE,
+                                TargetIndex = targetIndex,
+                                SourceIndex = sourceIndex,
+                                SourceOffset = sqpkHeader.HeaderDataSourceOffset,
+                            });
+                            this.sourceFileLastPtr[this.sourceFileLastPtr.Count - 1] = (int)(sqpkHeader.HeaderDataSourceOffset + SqpkHeader.HEADER_SIZE);
+                            break;
+                        }
                 }
             }
         }, cancellationToken);

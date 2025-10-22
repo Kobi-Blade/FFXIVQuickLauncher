@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using CheapLoc;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using CheapLoc;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Addon;
 using XIVLauncher.Common.Util;
@@ -30,9 +30,9 @@ namespace XIVLauncher.Windows
             if (EnvironmentSettings.IsDisableUpdates || AppUtil.GetBuildOrigin() != "goatcorp/FFXIVQuickLauncher")
             {
 #endif
-                CustomMessageBox.Show(
-                    $"You're running an unsupported version of XIVLauncher.\n\nThis can be unsafe and a danger to your SE account. If you have not gotten this unsupported version on purpose, please reinstall a clean version from {App.REPO_URL}/releases and contact us.",
-                    "XIVLauncher Problem", MessageBoxButton.OK, MessageBoxImage.Exclamation, parentWindow: this);
+            CustomMessageBox.Show(
+                $"You're running an unsupported version of XIVLauncher.\n\nThis can be unsafe and a danger to your SE account. If you have not gotten this unsupported version on purpose, please reinstall a clean version from {App.REPO_URL}/releases and contact us.",
+                "XIVLauncher Problem", MessageBoxButton.OK, MessageBoxImage.Exclamation, parentWindow: this);
 #if !XL_NOAUTOUPDATE
             }
 #endif
@@ -78,7 +78,7 @@ namespace XIVLauncher.Windows
             if (SetupTabControl.SelectedIndex == 2)
             {
                 App.Settings.GamePath = new DirectoryInfo(GamePathEntry.Text);
-                App.Settings.Language = (ClientLanguage) LanguageComboBox.SelectedIndex;
+                App.Settings.Language = (ClientLanguage)LanguageComboBox.SelectedIndex;
                 App.Settings.InGameAddonEnabled = HooksCheckBox.IsChecked == true;
 
                 App.Settings.AddonList = new List<AddonEntry>();

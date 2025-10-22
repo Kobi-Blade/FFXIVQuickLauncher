@@ -1,4 +1,7 @@
-﻿using System;
+using CheapLoc;
+using Newtonsoft.Json;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -10,9 +13,6 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using CheapLoc;
-using Newtonsoft.Json;
-using Serilog;
 using Velopack;
 using Velopack.Sources;
 using XIVLauncher.Common;

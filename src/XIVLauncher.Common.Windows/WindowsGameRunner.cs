@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -24,7 +24,8 @@ public class WindowsGameRunner : IGameRunner
         if (dalamudOk)
         {
             var compat = "RunAsInvoker ";
-            compat += dpiAwareness switch {
+            compat += dpiAwareness switch
+            {
                 DpiAwareness.Aware => "HighDPIAware",
                 DpiAwareness.Unaware => "DPIUnaware",
                 _ => throw new ArgumentOutOfRangeException()

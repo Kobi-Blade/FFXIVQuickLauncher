@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using XIVLauncher.Common.Util;
 #if LINUX || OSX
 using System.Runtime.InteropServices;
