@@ -171,38 +171,41 @@ namespace XIVLauncher
                 _mainWindow = new MainWindow();
                 _mainWindow.Initialize();
 
-                try
+                if (App.Settings.InGameAddonEnabled)
                 {
-                    DalamudUpdater = new DalamudUpdater(new DirectoryInfo(Path.Combine(Paths.RoamingPath, "addon")),
-                        new DirectoryInfo(Path.Combine(Paths.RoamingPath, "runtime")),
-                        new DirectoryInfo(Path.Combine(Paths.RoamingPath, "dalamudAssets")),
-                        new DirectoryInfo(Paths.RoamingPath),
-                        UniqueIdCache,
-                        Settings.DalamudRolloutBucket);
-
-                    if (this._dalamudRunnerOverride != null)
+                    try
                     {
-                        DalamudUpdater.RunnerOverride = this._dalamudRunnerOverride;
+                        DalamudUpdater = new DalamudUpdater(new DirectoryInfo(Path.Combine(Paths.RoamingPath, "addon")),
+                            new DirectoryInfo(Path.Combine(Paths.RoamingPath, "runtime")),
+                            new DirectoryInfo(Path.Combine(Paths.RoamingPath, "dalamudAssets")),
+                            new DirectoryInfo(Paths.RoamingPath),
+                            UniqueIdCache,
+                            Settings.DalamudRolloutBucket);
+
+                        if (this._dalamudRunnerOverride != null)
+                        {
+                            DalamudUpdater.RunnerOverride = this._dalamudRunnerOverride;
+                        }
+
+                        Settings.DalamudRolloutBucket = DalamudUpdater.RolloutBucket;
+
+                        var dalamudWindowThread = new Thread(DalamudOverlayThreadStart);
+                        dalamudWindowThread.SetApartmentState(ApartmentState.STA);
+                        dalamudWindowThread.IsBackground = true;
+                        dalamudWindowThread.Start();
+
+                        while (DalamudUpdater.Overlay == null)
+                            Thread.Yield();
+
+                        DalamudUpdater.Run(
+                            Settings.DalamudBetaKind,
+                            Settings.DalamudBetaKey,
+                            Updates.HaveFeatureFlag(Updates.LeaseFeatureFlags.ForceProxyDalamudAndAssets));
                     }
-
-                    Settings.DalamudRolloutBucket = DalamudUpdater.RolloutBucket;
-
-                    var dalamudWindowThread = new Thread(DalamudOverlayThreadStart);
-                    dalamudWindowThread.SetApartmentState(ApartmentState.STA);
-                    dalamudWindowThread.IsBackground = true;
-                    dalamudWindowThread.Start();
-
-                    while (DalamudUpdater.Overlay == null)
-                        Thread.Yield();
-
-                    DalamudUpdater.Run(
-                        Settings.DalamudBetaKind,
-                        Settings.DalamudBetaKey,
-                        Updates.HaveFeatureFlag(Updates.LeaseFeatureFlags.ForceProxyDalamudAndAssets));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Could not start dalamud updater");
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "Could not start dalamud updater");
+                    }
                 }
             });
         }
