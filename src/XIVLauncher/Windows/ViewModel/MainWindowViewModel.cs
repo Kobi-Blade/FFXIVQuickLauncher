@@ -23,7 +23,6 @@ using XIVLauncher.Common.Game.Exceptions;
 using XIVLauncher.Common.Game.Patch;
 using XIVLauncher.Common.Game.Patch.Acquisition;
 using XIVLauncher.Common.Game.Patch.PatchList;
-using XIVLauncher.Common.PlatformAbstractions;
 using XIVLauncher.Common.Util;
 using XIVLauncher.Common.Windows;
 using XIVLauncher.Game;
@@ -1098,35 +1097,35 @@ namespace XIVLauncher.Windows.ViewModel
         public async Task<Process> StartGameAndAddon(Launcher.LoginResult loginResult, bool isSteam, bool forceNoDalamud, bool noThird, bool noPlugins)
         {
             DalamudLauncher dalamudLauncher = null;
-			var dalamudOk = false;
-			
-			if (App.Settings.InGameAddonEnabled)
-			{
-				try
-				{
-					dalamudLauncher = new DalamudLauncher(new WindowsDalamudRunner(App.DalamudUpdater.Runtime), App.DalamudUpdater, App.Settings.InGameAddonLoadMethod.GetValueOrDefault(DalamudLoadMethod.DllInject),
-						App.Settings.GamePath,
-						new DirectoryInfo(Paths.RoamingPath),
-						new DirectoryInfo(Paths.RoamingPath),
-						App.Settings.Language.GetValueOrDefault(ClientLanguage.English),
-						(int)App.Settings.DalamudInjectionDelayMs,
-						false,
-						noPlugins,
-						noThird,
-						Troubleshooting.GetTroubleshootingJson());
+            var dalamudOk = false;
 
-					var dalamudCompatCheck = new WindowsDalamudCompatibilityCheck();
-					dalamudCompatCheck.EnsureCompatibility();
-					
-					var dalamudStatus = dalamudLauncher.HoldForUpdate(App.Settings.GamePath);
-					dalamudOk = dalamudStatus == DalamudLauncher.DalamudInstallState.Ok;
-					
-				}
-				catch (Exception)
-				{
-				
-				}
-			}
+            if (App.Settings.InGameAddonEnabled)
+            {
+                try
+                {
+                    dalamudLauncher = new DalamudLauncher(new WindowsDalamudRunner(App.DalamudUpdater.Runtime), App.DalamudUpdater, App.Settings.InGameAddonLoadMethod.GetValueOrDefault(DalamudLoadMethod.DllInject),
+                        App.Settings.GamePath,
+                        new DirectoryInfo(Paths.RoamingPath),
+                        new DirectoryInfo(Paths.RoamingPath),
+                        App.Settings.Language.GetValueOrDefault(ClientLanguage.English),
+                        (int)App.Settings.DalamudInjectionDelayMs,
+                        false,
+                        noPlugins,
+                        noThird,
+                        Troubleshooting.GetTroubleshootingJson());
+
+                    var dalamudCompatCheck = new WindowsDalamudCompatibilityCheck();
+                    dalamudCompatCheck.EnsureCompatibility();
+
+                    var dalamudStatus = dalamudLauncher.HoldForUpdate(App.Settings.GamePath);
+                    dalamudOk = dalamudStatus == DalamudLauncher.DalamudInstallState.Ok;
+
+                }
+                catch (Exception)
+                {
+
+                }
+            }
 
             var gameRunner = new WindowsGameRunner(dalamudLauncher, dalamudOk);
 
