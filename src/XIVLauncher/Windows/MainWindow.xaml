@@ -12,12 +12,12 @@
     mc:Ignorable="d"
     Title="XIVLauncher"
     Width="845"
-    Height="376"
+    Height="390"
     ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen"
     Icon="pack://application:,,,/Resources/dalamud_icon.ico"
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     Background="{DynamicResource MaterialDesignPaper}"
-    TextElement.FontWeight="Medium" Closing="MainWindow_OnClosing"
+    TextElement.FontWeight="Medium"
     FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
     d:DataContext="{d:DesignInstance viewModel:MainWindowViewModel}">
 

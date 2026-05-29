@@ -49,8 +49,6 @@ namespace XIVLauncher.Settings
         string? DalamudBetaKind { get; set; }
         string? DalamudBetaKey { get; set; }
 
-        PreserveWindowPosition.WindowPlacement? MainWindowPlacement { get; set; }
-
         #endregion
     }
 }

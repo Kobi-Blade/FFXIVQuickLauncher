@@ -242,11 +242,6 @@ namespace XIVLauncher.Windows
 
                         break;
 
-                    // 5.12.2022: Bad main window placement when using auto-launch
-                    case 1:
-                        App.Settings.MainWindowPlacement = null;
-                        break;
-
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
@@ -602,36 +597,5 @@ namespace XIVLauncher.Windows
             Close();
         }
 
-        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
-        {
-            if (!_everShown)
-                return;
-
-            try
-            {
-                PreserveWindowPosition.SaveWindowPosition(this);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Couldn't save window position");
-            }
-        }
-
-        protected override void OnSourceInitialized(EventArgs e)
-        {
-            try
-            {
-                PreserveWindowPosition.RestorePosition(this);
-
-                // Restore the size of the window to what we expect it to be
-                // There's no better way to do it that doesn't make me wanna off myself
-                Width = 845;
-                Height = 376;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Couldn't restore window position");
-            }
-        }
     }
 }
