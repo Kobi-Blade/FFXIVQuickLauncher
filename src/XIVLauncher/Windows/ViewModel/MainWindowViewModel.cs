@@ -1224,7 +1224,7 @@ namespace XIVLauncher.Windows.ViewModel
                     var accountToSave = new XivAccount(username)
                     {
                         Password = password,
-                        SavePassword = true,
+                        SavePassword = IsAutoLogin,
                         UseOtp = IsOtp,
                         UseSteamServiceAccount = IsSteam
                     };

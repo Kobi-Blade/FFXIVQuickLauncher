@@ -7,8 +7,7 @@ namespace XIVLauncher.Accounts
 {
     public class XivAccount
     {
-        private const string CREDS_PREFIX_OLD = "FINAL FANTASY XIV";
-        private const string CREDS_PREFIX_NEW = "XIVLAUNCHER";
+        private const string CREDS_PREFIX = "XIVLAUNCHER";
 
         [JsonIgnore]
         public string Id => $"{UserName}-{UseOtp}-{UseSteamServiceAccount}";
@@ -22,58 +21,21 @@ namespace XIVLauncher.Accounts
         {
             get
             {
-                var credentials = CredentialManager.GetCredentials($"{CREDS_PREFIX_OLD}-{UserName.ToLower()}");
-
-                if (credentials != null)
-                {
-                    var saved = CredentialManager.SaveCredentials($"{CREDS_PREFIX_NEW}-{UserName.ToLower()}", new NetworkCredential
-                    {
-                        UserName = credentials.UserName,
-                        Password = credentials.Password,
-                    });
-
-                    if (saved)
-                    {
-                        try
-                        {
-                            CredentialManager.RemoveCredentials($"{CREDS_PREFIX_OLD}-{UserName.ToLower()}");
-                        }
-                        catch (Win32Exception)
-                        {
-                            // ignored
-                        }
-                    }
-                }
-                else
-                {
-                    credentials = CredentialManager.GetCredentials($"{CREDS_PREFIX_NEW}-{UserName.ToLower()}");
-                }
-
-                return credentials != null ? credentials.Password : string.Empty;
+                var credentials = CredentialManager.GetCredentials($"{CREDS_PREFIX}-{UserName.ToLower()}");
+                return credentials?.Password ?? string.Empty;
             }
             set
             {
-                try
-                {
-                    CredentialManager.RemoveCredentials($"{CREDS_PREFIX_OLD}-{UserName.ToLower()}");
-                }
-                catch (Win32Exception)
-                {
-                    // ignored
-                }
+                var target = $"{CREDS_PREFIX}-{UserName.ToLower()}";
 
-                try
+                if (!SavePassword)
                 {
-                    CredentialManager.RemoveCredentials($"{CREDS_PREFIX_NEW}-{UserName.ToLower()}");
+                    if (CredentialManager.GetCredentials(target) != null)
+                        CredentialManager.RemoveCredentials(target);
                 }
-                catch (Win32Exception)
+                else if (!string.IsNullOrWhiteSpace(value))
                 {
-                    // ignored
-                }
-
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    CredentialManager.SaveCredentials($"{CREDS_PREFIX_NEW}-{UserName.ToLower()}", new NetworkCredential
+                    CredentialManager.SaveCredentials(target, new NetworkCredential
                     {
                         UserName = UserName,
                         Password = value
