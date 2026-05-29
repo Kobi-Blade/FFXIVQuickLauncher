@@ -32,19 +32,6 @@ public static class Program
             MessageBox.Show("Could not set up logging. Please report this error.\n\n" + ex, "XIVLauncher", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        try
-        {
-            var serilogLogger = new VelopackSerilogLogger();
-
-            VelopackApp.Build()
-                       .SetLogger(serilogLogger)
-                       .Run();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Could not update XIVLauncher. Please report this error.\n\n" + ex, "XIVLauncher", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-
         // Now run the WPF app.
         var app = new App();
         app.InitializeComponent();
@@ -57,24 +44,5 @@ public static class Program
             return;
 
         Troubleshooting.LogException(e.Exception, e.Line);
-    }
-
-    private class VelopackSerilogLogger : IVelopackLogger
-    {
-        public void Log(VelopackLogLevel logLevel, string message, Exception exception)
-        {
-            var level = logLevel switch
-            {
-                VelopackLogLevel.Trace => LogEventLevel.Verbose,
-                VelopackLogLevel.Debug => LogEventLevel.Debug,
-                VelopackLogLevel.Error => LogEventLevel.Error,
-                VelopackLogLevel.Information => LogEventLevel.Information,
-                VelopackLogLevel.Warning => LogEventLevel.Warning,
-                VelopackLogLevel.Critical => LogEventLevel.Fatal,
-                _ => throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null)
-            };
-
-            Serilog.Log.Write(level, exception, "[VELOPACK] {Message}", message);
-        }
     }
 }
