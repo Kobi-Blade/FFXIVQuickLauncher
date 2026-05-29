@@ -130,7 +130,7 @@ public class WindowsRestartManager : IDisposable
         [MarshalAs(UnmanagedType.Bool)]
         public bool bRestartable;
 
-        public Process Process
+        public Process? Process
         {
             get
             {
@@ -162,10 +162,10 @@ public class WindowsRestartManager : IDisposable
     private static extern int RmEndSession(int dwSessionHandle);
 
     [DllImport("rstrtmgr")]
-    private static extern int RmShutdown(int dwSessionHandle, RmShutdownType lAtionFlags, RmWriteStatusCallback fnStatus);
+    private static extern int RmShutdown(int dwSessionHandle, RmShutdownType lAtionFlags, RmWriteStatusCallback? fnStatus);
 
     [DllImport("rstrtmgr")]
-    private static extern int RmRestart(int dwSessionHandle, int dwRestartFlags, RmWriteStatusCallback fnStatus);
+    private static extern int RmRestart(int dwSessionHandle, int dwRestartFlags, RmWriteStatusCallback? fnStatus);
 
     [DllImport("rstrtmgr")]
     private static extern int RmGetList(int dwSessionHandle, out int nProcInfoNeeded, ref int nProcInfo, [In, Out] RmProcessInfo[] rgAffectedApps, out RmRebootReason dwRebootReasons);
@@ -186,7 +186,7 @@ public class WindowsRestartManager : IDisposable
         sessionKey = sessKey.ToString();
     }
 
-    public void Register(IEnumerable<FileInfo> files = null, IEnumerable<Process> processes = null, IEnumerable<string> serviceNames = null)
+    public void Register(IEnumerable<FileInfo>? files = null, IEnumerable<Process>? processes = null, IEnumerable<string>? serviceNames = null)
     {
         string[] filesArray = files?.Select(f => f.FullName).ToArray() ?? Array.Empty<string>();
         RmUniqueProcess[] processesArray = processes?.Select(f => new RmUniqueProcess
@@ -205,12 +205,12 @@ public class WindowsRestartManager : IDisposable
             servicesArray.Length, servicesArray));
     }
 
-    public void Shutdown(bool forceShutdown = true, bool shutdownOnlyRegistered = false, RmWriteStatusCallback cb = null)
+    public void Shutdown(bool forceShutdown = true, bool shutdownOnlyRegistered = false, RmWriteStatusCallback? cb = null)
     {
         ThrowOnFailure(RmShutdown(sessionHandle, (forceShutdown ? RmShutdownType.RmForceShutdown : 0) | (shutdownOnlyRegistered ? RmShutdownType.RmShutdownOnlyRegistered : 0), cb));
     }
 
-    public void Restart(RmWriteStatusCallback cb = null)
+    public void Restart(RmWriteStatusCallback? cb = null)
     {
         ThrowOnFailure(RmRestart(sessionHandle, 0, cb));
     }

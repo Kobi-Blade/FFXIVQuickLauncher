@@ -197,7 +197,7 @@ public class WindowsDalamudRunner : IDalamudRunner
             try
             {
                 Log.Verbose("=> Dalamud.Injector output: {Output}", output);
-                var dalamudConsoleOutput = JsonConvert.DeserializeObject<DalamudConsoleOutput>(output);
+                var dalamudConsoleOutput = JsonConvert.DeserializeObject<DalamudConsoleOutput>(output) ?? throw new InvalidOperationException("Failed to deserialize Dalamud console output");
 
                 if (dalamudConsoleOutput.Handle == 0)
                 {
@@ -255,7 +255,7 @@ public class WindowsDalamudRunner : IDalamudRunner
     * New code taken from .NET Core
     * https://github.com/dotnet/runtime/blob/2c62994efb2495dcaef2312de3ab25ea4792b23a/src/libraries/System.Diagnostics.Process/src/System/Diagnostics/ProcessStartInfo.cs#L97-L110
     */
-    private static IDictionary<string, string> SafeGetEnvVars()
+    private static IDictionary<string, string?> SafeGetEnvVars()
     {
         IDictionary envVars = System.Environment.GetEnvironmentVariables();
 
@@ -280,17 +280,17 @@ public class WindowsDalamudRunner : IDalamudRunner
     // https://github.com/dotnet/runtime/blob/2c62994efb2495dcaef2312de3ab25ea4792b23a/src/libraries/System.Diagnostics.Process/src/System/Collections/Specialized/DictionaryWrapper.cs#L8
     private sealed class DictionaryWrapper : IDictionary<string, string?>, IDictionary
     {
-        private readonly Dictionary<string, string?> _contents;
+        private readonly Dictionary<string, string?> contents;
 
         public DictionaryWrapper(Dictionary<string, string?> contents)
         {
-            _contents = contents;
+            this.contents = contents;
         }
 
         public string? this[string key]
         {
-            get => _contents[key];
-            set => _contents[key] = value;
+            get => contents[key];
+            set => contents[key] = value;
         }
 
         public object? this[object key]
@@ -299,18 +299,18 @@ public class WindowsDalamudRunner : IDalamudRunner
             set => this[(string)key] = (string?)value;
         }
 
-        public ICollection<string> Keys => _contents.Keys;
-        public ICollection<string?> Values => _contents.Values;
+        public ICollection<string> Keys => contents.Keys;
+        public ICollection<string?> Values => contents.Values;
 
-        ICollection IDictionary.Keys => _contents.Keys;
-        ICollection IDictionary.Values => _contents.Values;
+        ICollection IDictionary.Keys => contents.Keys;
+        ICollection IDictionary.Values => contents.Values;
 
-        public int Count => _contents.Count;
+        public int Count => contents.Count;
 
-        public bool IsReadOnly => ((IDictionary)_contents).IsReadOnly;
-        public bool IsSynchronized => ((IDictionary)_contents).IsSynchronized;
-        public bool IsFixedSize => ((IDictionary)_contents).IsFixedSize;
-        public object SyncRoot => ((IDictionary)_contents).SyncRoot;
+        public bool IsReadOnly => ((IDictionary)contents).IsReadOnly;
+        public bool IsSynchronized => ((IDictionary)contents).IsSynchronized;
+        public bool IsFixedSize => ((IDictionary)contents).IsFixedSize;
+        public object SyncRoot => ((IDictionary)contents).SyncRoot;
 
         public void Add(string key, string? value) => this[key] = value;
 
@@ -318,25 +318,25 @@ public class WindowsDalamudRunner : IDalamudRunner
 
         public void Add(object key, object? value) => Add((string)key, (string?)value);
 
-        public void Clear() => _contents.Clear();
+        public void Clear() => contents.Clear();
 
         public bool Contains(KeyValuePair<string, string?> item)
         {
-            return _contents.ContainsKey(item.Key) && _contents[item.Key] == item.Value;
+            return contents.ContainsKey(item.Key) && contents[item.Key] == item.Value;
         }
 
         public bool Contains(object key) => ContainsKey((string)key);
-        public bool ContainsKey(string key) => _contents.ContainsKey(key);
-        public bool ContainsValue(string? value) => _contents.ContainsValue(value);
+        public bool ContainsKey(string key) => contents.ContainsKey(key);
+        public bool ContainsValue(string? value) => contents.ContainsValue(value);
 
         public void CopyTo(KeyValuePair<string, string?>[] array, int arrayIndex)
         {
-            ((IDictionary<string, string?>)_contents).CopyTo(array, arrayIndex);
+            ((IDictionary<string, string?>)contents).CopyTo(array, arrayIndex);
         }
 
-        public void CopyTo(Array array, int index) => ((IDictionary)_contents).CopyTo(array, index);
+        public void CopyTo(Array array, int index) => ((IDictionary)contents).CopyTo(array, index);
 
-        public bool Remove(string key) => _contents.Remove(key);
+        public bool Remove(string key) => contents.Remove(key);
         public void Remove(object key) => Remove((string)key);
 
         public bool Remove(KeyValuePair<string, string?> item)
@@ -349,15 +349,15 @@ public class WindowsDalamudRunner : IDalamudRunner
             return Remove(item.Key);
         }
 
-        public bool TryGetValue(string key, out string? value) => _contents.TryGetValue(key, out value);
+        public bool TryGetValue(string key, out string? value) => contents.TryGetValue(key, out value);
 
-        public IEnumerator<KeyValuePair<string, string?>> GetEnumerator() => _contents.GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => _contents.GetEnumerator();
-        IDictionaryEnumerator IDictionary.GetEnumerator() => _contents.GetEnumerator();
+        public IEnumerator<KeyValuePair<string, string?>> GetEnumerator() => contents.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => contents.GetEnumerator();
+        IDictionaryEnumerator IDictionary.GetEnumerator() => contents.GetEnumerator();
     }
 
     // https://github.com/dotnet/runtime/blob/2c62994efb2495dcaef2312de3ab25ea4792b23a/src/libraries/System.Diagnostics.Process/src/System/Diagnostics/Process.Windows.cs#L860-L879
-    private static string GetEnvironmentVariablesBlock(IDictionary<string, string> sd)
+    private static string GetEnvironmentVariablesBlock(IDictionary<string, string?> sd)
     {
         // https://docs.microsoft.com/en-us/windows/win32/procthread/changing-environment-variables
         // "All strings in the environment block must be sorted alphabetically by name. The sort is
@@ -457,7 +457,7 @@ public class WindowsDalamudRunner : IDalamudRunner
         [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle,
         DuplicateOptions dwOptions);
 
-    private static Process GetInheritableCurrentProcessHandle()
+    private static Process? GetInheritableCurrentProcessHandle()
     {
         if (!DuplicateHandle(Process.GetCurrentProcess().Handle, Process.GetCurrentProcess().Handle, Process.GetCurrentProcess().Handle, out var inheritableCurrentProcessHandle, 0, true, DuplicateOptions.SameAccess))
         {

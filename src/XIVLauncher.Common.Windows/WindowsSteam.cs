@@ -19,6 +19,7 @@ namespace XIVLauncher.Common.Windows
 
         public WindowsSteam()
         {
+            OnGamepadTextInputDismissed = null!;
             SteamUtils.OnGamepadTextInputDismissed += b => OnGamepadTextInputDismissed?.Invoke(b);
         }
 
