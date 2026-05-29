@@ -300,30 +300,7 @@ namespace XIVLauncher.Windows
             if (string.IsNullOrEmpty(ViewModel.GamePath) || !GameHelpers.PathHasExistingInstall(ViewModel.GamePath))
                 return;
 
-            try
-            {
-                var applicable = App.DalamudUpdater.ReCheckVersion(new DirectoryInfo(ViewModel.GamePath));
-
-                if (!applicable.HasValue)
-                {
-                    CustomMessageBox.Show(
-                        Loc.Localize("DalamudEnsureFail", "Could not determine Dalamud compatibility for the selected game version.\nPlease ensure that the game path is correct and that the game is fully updated."),
-                        "XIVLauncher", MessageBoxButton.OK, MessageBoxImage.Asterisk, parentWindow: Window.GetWindow(this));
-                }
-                else if ((bool)!applicable)
-                {
-                    CustomMessageBox.Show(
-                        Loc.Localize("DalamudIncompatible", "Dalamud was not yet updated for your current game version.\nThis is common after patches, so please be patient or ask on the Discord for a status update!"),
-                        "XIVLauncher", MessageBoxButton.OK, MessageBoxImage.Asterisk, parentWindow: Window.GetWindow(this));
-                }
-            }
-            catch (Exception exc)
-            {
-                CustomMessageBox.Show(Loc.Localize("DalamudCompatCheckFailed",
-                    "Could not contact the server to get the current compatible game version for Dalamud. This might mean that your .NET installation is too old.\nPlease check the Discord for more information."), "XIVLauncher Problem", MessageBoxButton.OK, MessageBoxImage.Hand, parentWindow: Window.GetWindow(this));
-
-                Log.Error(exc, "Couldn't check dalamud compatibility.");
-            }
+            App.InitializeDalamudUpdater(this);
         }
 
         private void PluginsFolderButton_Click(object sender, RoutedEventArgs e)

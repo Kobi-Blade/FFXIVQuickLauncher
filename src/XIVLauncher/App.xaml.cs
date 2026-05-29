@@ -187,41 +187,54 @@ namespace XIVLauncher
                 _mainWindow = new MainWindow();
                 _mainWindow.Initialize();
 
-                try
+                if (App.Settings.InGameAddonEnabled)
                 {
-                    DalamudUpdater = new DalamudUpdater(new DirectoryInfo(Path.Combine(Paths.RoamingPath, "addon")),
-                        new DirectoryInfo(Path.Combine(Paths.RoamingPath, "runtime")),
-                        new DirectoryInfo(Path.Combine(Paths.RoamingPath, "dalamudAssets")),
-                        UniqueIdCache,
-                        Settings.DalamudRolloutBucket);
-
-                    _mainWindow.SettingsControl.SetUpdater(DalamudUpdater);
-
-                    if (this._dalamudRunnerOverride != null)
-                    {
-                        DalamudUpdater.RunnerOverride = this._dalamudRunnerOverride;
-                    }
-
-                    Settings.DalamudRolloutBucket = DalamudUpdater.RolloutBucket;
-
-                    var dalamudWindowThread = new Thread(DalamudOverlayThreadStart);
-                    dalamudWindowThread.SetApartmentState(ApartmentState.STA);
-                    dalamudWindowThread.IsBackground = true;
-                    dalamudWindowThread.Start();
-
-                    while (DalamudUpdater.Overlay == null)
-                        Thread.Yield();
-
-                    DalamudUpdater.Run(
-                        Settings.DalamudBetaKind,
-                        Settings.DalamudBetaKey,
-                        Updates.HaveFeatureFlag(Updates.LeaseFeatureFlags.ForceProxyDalamudAndAssets));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Could not start dalamud updater");
+                    InitializeDalamudUpdater(_mainWindow.SettingsControl);
                 }
             });
+        }
+
+        public static void InitializeDalamudUpdater(SettingsControl settingsControl)
+        {
+            if (DalamudUpdater != null)
+                return;
+
+            try
+            {
+                DalamudUpdater = new DalamudUpdater(new DirectoryInfo(Path.Combine(Paths.RoamingPath, "addon")),
+                    new DirectoryInfo(Path.Combine(Paths.RoamingPath, "runtime")),
+                    new DirectoryInfo(Path.Combine(Paths.RoamingPath, "dalamudAssets")),
+                    UniqueIdCache,
+                    Settings.DalamudRolloutBucket);
+
+                settingsControl.SetUpdater(DalamudUpdater);
+
+                if (Application.Current is App app && app._dalamudRunnerOverride != null)
+                {
+                    DalamudUpdater.RunnerOverride = app._dalamudRunnerOverride;
+                }
+
+                Settings.DalamudRolloutBucket = DalamudUpdater.RolloutBucket;
+
+                var dalamudWindowThread = new Thread(DalamudOverlayThreadStart);
+                dalamudWindowThread.SetApartmentState(ApartmentState.STA);
+                dalamudWindowThread.IsBackground = true;
+                dalamudWindowThread.Start();
+
+                while (DalamudUpdater.Overlay == null)
+                    Thread.Yield();
+
+                DalamudUpdater.Run(
+                    Settings.DalamudBetaKind,
+                    Settings.DalamudBetaKey,
+                    Updates.HaveFeatureFlag(Updates.LeaseFeatureFlags.ForceProxyDalamudAndAssets));
+
+                Log.Information("[DUPDATE] Dalamud updater initialized");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Could not start dalamud updater");
+            }
         }
 
         // We need this because the main dispatcher is blocked by the main window/login task.
