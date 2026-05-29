@@ -1,3 +1,4 @@
+using Serilog;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,7 +8,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Serilog;
 using XIVLauncher.Common.Http;
 using XIVLauncher.Common.Util;
 using XIVLauncher.Windows.ViewModel;

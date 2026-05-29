@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using CheapLoc;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using CheapLoc;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Addon;
 using XIVLauncher.Common.Util;
@@ -76,7 +76,7 @@ namespace XIVLauncher.Windows
             if (SetupTabControl.SelectedIndex == 2)
             {
                 App.Settings.GamePath = new DirectoryInfo(GamePathEntry.Text);
-                App.Settings.Language = (ClientLanguage) LanguageComboBox.SelectedIndex;
+                App.Settings.Language = (ClientLanguage)LanguageComboBox.SelectedIndex;
                 App.Settings.InGameAddonEnabled = HooksCheckBox.IsChecked == true;
 
                 App.Settings.AddonList = new List<AddonEntry>();

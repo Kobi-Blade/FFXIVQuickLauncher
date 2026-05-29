@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -12,7 +12,7 @@ namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
     {
         public static string Type { get; protected set; }
         // Hack: C# doesn't let you get static fields from instances.
-        public virtual string ChunkType => (string) GetType()
+        public virtual string ChunkType => (string)GetType()
             .GetField("Type", BindingFlags.Static | BindingFlags.FlattenHierarchy | BindingFlags.Public)
             ?.GetValue(null);
 
@@ -117,7 +117,7 @@ namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
             using var advanceAfter = this.GetAdvanceOnDispose();
         }
 
-        public virtual void ApplyChunk(ZiPatchConfig config) {}
+        public virtual void ApplyChunk(ZiPatchConfig config) { }
 
         protected void ReadChecksum()
         {

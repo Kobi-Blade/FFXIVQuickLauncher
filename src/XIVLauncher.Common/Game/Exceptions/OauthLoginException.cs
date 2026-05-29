@@ -1,6 +1,6 @@
-﻿using System;
-using System.Text.RegularExpressions;
 using Serilog;
+using System;
+using System.Text.RegularExpressions;
 
 namespace XIVLauncher.Common.Game.Exceptions;
 

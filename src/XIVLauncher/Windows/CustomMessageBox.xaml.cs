@@ -1,3 +1,6 @@
+using CheapLoc;
+using MaterialDesignThemes.Wpf;
+using Serilog;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -8,9 +11,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using CheapLoc;
-using MaterialDesignThemes.Wpf;
-using Serilog;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Util;
 using XIVLauncher.Support;

@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Config.Net;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace XIVLauncher.Settings.Parsers;
 

@@ -1,13 +1,13 @@
-﻿using System;
+using Newtonsoft.Json;
+using Serilog;
+using System;
+using System.Collections.Generic;
 using System.Media;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Support;
 using XIVLauncher.Windows.ViewModel;
 

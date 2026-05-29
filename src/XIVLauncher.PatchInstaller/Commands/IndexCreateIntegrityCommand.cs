@@ -1,8 +1,9 @@
+using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Parsing;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -12,8 +13,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Common.Game;
 using XIVLauncher.Common.Patching.IndexedZiPatch;
 

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+using Serilog;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using Serilog;
 using XIVLauncher.Common.PlatformAbstractions;
 
 namespace XIVLauncher.Common.Dalamud

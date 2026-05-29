@@ -1,7 +1,7 @@
+using CheapLoc;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using CheapLoc;
 
 namespace XIVLauncher.Windows.ViewModel
 {

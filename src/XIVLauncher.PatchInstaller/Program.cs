@@ -1,8 +1,8 @@
-﻿using System;
-using System.CommandLine;
-using System.Threading.Tasks;
 using Serilog;
 using Serilog.Events;
+using System;
+using System.CommandLine;
+using System.Threading.Tasks;
 using XIVLauncher.PatchInstaller.Commands;
 
 namespace XIVLauncher.PatchInstaller;

@@ -23,7 +23,7 @@ namespace XIVLauncher.Support
             var patcherLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "patcher.log"));
             var dalamudLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "dalamud.log"));
             var dalamudInjectorLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "dalamud.injector.log"));
-            var dalamudBootLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "dalamud.boot.log"));  
+            var dalamudBootLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "dalamud.boot.log"));
             var ariaLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "aria.log"));
 
             AddIfExist(xlLogFile, archive);

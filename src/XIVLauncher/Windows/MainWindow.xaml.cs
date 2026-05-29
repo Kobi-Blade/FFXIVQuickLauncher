@@ -1,7 +1,8 @@
+using CheapLoc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,8 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using CheapLoc;
-using Serilog;
 using XIVLauncher.Accounts;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Dalamud;
@@ -21,7 +20,6 @@ using XIVLauncher.Common.Game.Patch.Acquisition;
 using XIVLauncher.Common.Util;
 using XIVLauncher.Support;
 using XIVLauncher.Windows.ViewModel;
-using XIVLauncher.Xaml;
 using Timer = System.Timers.Timer;
 
 namespace XIVLauncher.Windows
@@ -146,7 +144,7 @@ namespace XIVLauncher.Windows
                     this.BannerDot.ItemsSource = this._bannerDotList;
                 }));
 
-                _bannerChangeTimer = new Timer {Interval = 5000};
+                _bannerChangeTimer = new Timer { Interval = 5000 };
 
                 _bannerChangeTimer.Elapsed += (o, args) =>
                 {
@@ -179,7 +177,7 @@ namespace XIVLauncher.Windows
                 Log.Error(ex, "Could not get news");
                 _ = Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    NewsListView.ItemsSource = new List<News> {new News {Title = Loc.Localize("NewsDlFailed", "Could not download news data."), Tag = "DlError"}};
+                    NewsListView.ItemsSource = new List<News> { new News { Title = Loc.Localize("NewsDlFailed", "Could not download news data."), Tag = "DlError" } };
                 }));
             }
         }

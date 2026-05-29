@@ -1,9 +1,9 @@
-﻿using System;
+using Newtonsoft.Json;
+using Serilog;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Serilog;
 
 namespace XIVLauncher.Common.Game.Patch.Acquisition.Aria.JsonRpc
 {
@@ -24,7 +24,8 @@ namespace XIVLauncher.Common.Game.Patch.Acquisition.Aria.JsonRpc
             };
         }
 
-        private static string Base64Encode(string plainText) {
+        private static string Base64Encode(string plainText)
+        {
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             return Convert.ToBase64String(plainTextBytes);
         }

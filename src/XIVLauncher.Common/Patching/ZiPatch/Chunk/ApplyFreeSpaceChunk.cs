@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using XIVLauncher.Common.Patching.Util;
 
 namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
@@ -19,7 +19,7 @@ namespace XIVLauncher.Common.Patching.ZiPatch.Chunk
             UnknownFieldB = this.Reader.ReadInt64BE();
         }
 
-        public ApplyFreeSpaceChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) {}
+        public ApplyFreeSpaceChunk(BinaryReader reader, long offset, long size) : base(reader, offset, size) { }
 
         public override string ToString()
         {

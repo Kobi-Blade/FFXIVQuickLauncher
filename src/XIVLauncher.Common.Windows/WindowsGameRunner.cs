@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using XIVLauncher.Common.Dalamud;
-using XIVLauncher.Common.Game;
 using XIVLauncher.Common.PlatformAbstractions;
 
 namespace XIVLauncher.Common.Windows;

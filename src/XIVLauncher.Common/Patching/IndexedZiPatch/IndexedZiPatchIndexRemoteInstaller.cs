@@ -1,4 +1,4 @@
-﻿using SharedMemory;
+using SharedMemory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -536,35 +536,35 @@ public class IndexedZiPatchIndexRemoteInstaller : IIndexedZiPatchIndexInstaller
                             break;
 
                         case WorkerInboundOpcode.MoveFile:
-                        {
-                            var sourceFileName = reader.ReadString();
-                            var targetFileName = reader.ReadString();
+                            {
+                                var sourceFileName = reader.ReadString();
+                                var targetFileName = reader.ReadString();
 
-                            var sourceParentDir = new DirectoryInfo(Path.GetDirectoryName(sourceFileName) ?? throw new InvalidOperationException());
-                            var targetParentDir =
-                                new DirectoryInfo(Path.GetDirectoryName(
-                                                      targetFileName.EndsWith("/", StringComparison.Ordinal) ? targetFileName.Substring(0, targetFileName.Length - 1) : targetFileName)
-                                                  ?? throw new InvalidOperationException());
+                                var sourceParentDir = new DirectoryInfo(Path.GetDirectoryName(sourceFileName) ?? throw new InvalidOperationException());
+                                var targetParentDir =
+                                    new DirectoryInfo(Path.GetDirectoryName(
+                                                          targetFileName.EndsWith("/", StringComparison.Ordinal) ? targetFileName.Substring(0, targetFileName.Length - 1) : targetFileName)
+                                                      ?? throw new InvalidOperationException());
 
-                            targetParentDir.Create();
-                            Directory.Move(sourceFileName, targetFileName);
+                                targetParentDir.Create();
+                                Directory.Move(sourceFileName, targetFileName);
 
-                            if (!sourceParentDir.GetFileSystemInfos().Any())
-                                sourceParentDir.Delete(false);
-                            break;
-                        }
+                                if (!sourceParentDir.GetFileSystemInfos().Any())
+                                    sourceParentDir.Delete(false);
+                                break;
+                            }
 
                         case WorkerInboundOpcode.CreateDirectory:
                             new DirectoryInfo(reader.ReadString()).Create();
                             break;
 
                         case WorkerInboundOpcode.RemoveDirectory:
-                        {
-                            var dir = new DirectoryInfo(reader.ReadString());
-                            var recursive = reader.ReadBoolean();
-                            dir.Delete(recursive);
-                            break;
-                        }
+                            {
+                                var dir = new DirectoryInfo(reader.ReadString());
+                                var recursive = reader.ReadBoolean();
+                                dir.Delete(recursive);
+                                break;
+                            }
 
                         default:
                             throw new InvalidOperationException("Invalid WorkerInboundOpcode");

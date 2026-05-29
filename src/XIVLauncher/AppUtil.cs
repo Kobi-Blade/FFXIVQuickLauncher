@@ -1,3 +1,5 @@
+using CheapLoc;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,8 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using CheapLoc;
-using Microsoft.Win32;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Game.Patch;
 using XIVLauncher.Common.Util;

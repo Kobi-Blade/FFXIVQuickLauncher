@@ -1,6 +1,6 @@
-using System;
 using Serilog.Core;
 using Serilog.Events;
+using System;
 
 namespace XIVLauncher.Common.Support
 {

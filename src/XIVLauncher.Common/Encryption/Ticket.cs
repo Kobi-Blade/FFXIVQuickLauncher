@@ -1,11 +1,11 @@
-﻿using System;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Serilog;
 using XIVLauncher.Common.Encryption.BlockCipher;
 using XIVLauncher.Common.PlatformAbstractions;
 using XIVLauncher.Common.Util;

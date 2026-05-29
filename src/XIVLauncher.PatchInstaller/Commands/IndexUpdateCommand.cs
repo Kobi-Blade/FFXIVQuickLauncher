@@ -1,8 +1,9 @@
+using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Parsing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -10,8 +11,6 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Game;
 using XIVLauncher.Common.Game.Patch.Acquisition;
@@ -333,7 +332,7 @@ public class IndexUpdateCommand
 
                     if (File.Exists(patchFilePath + ".index"))
                     {
-                        for (var j = 0;; j++)
+                        for (var j = 0; ; j++)
                         {
                             if (File.Exists($"{patchFilePath}.index.{j}.old"))
                                 continue;

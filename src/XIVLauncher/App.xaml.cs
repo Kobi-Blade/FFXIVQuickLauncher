@@ -1,4 +1,9 @@
-﻿using System;
+using CheapLoc;
+using CommandLine;
+using Config.Net;
+using Newtonsoft.Json;
+using Serilog;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,11 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
-using CheapLoc;
-using CommandLine;
-using Config.Net;
-using Newtonsoft.Json;
-using Serilog;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Dalamud;
 using XIVLauncher.Common.Game;
@@ -21,7 +21,6 @@ using XIVLauncher.PlatformAbstractions;
 using XIVLauncher.Settings;
 using XIVLauncher.Settings.Parsers;
 using XIVLauncher.Windows;
-using XIVLauncher.Xaml;
 
 namespace XIVLauncher
 {
