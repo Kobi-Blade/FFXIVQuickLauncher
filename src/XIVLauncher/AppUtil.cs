@@ -42,8 +42,8 @@ namespace XIVLauncher
 
         public static string GetAssemblyVersion()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var assembly = Process.GetCurrentProcess().MainModule?.FileName;
+            var fvi = FileVersionInfo.GetVersionInfo(assembly);
             return fvi.FileVersion;
         }
 
