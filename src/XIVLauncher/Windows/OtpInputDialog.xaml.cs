@@ -188,11 +188,8 @@ namespace XIVLauncher.Windows
                 return parentWindow.Dispatcher.Invoke(() => AskForOtp(onOtpResult, parentWindow));
 
             var dialog = new OtpInputDialog();
-            if (parentWindow.IsVisible)
-            {
-                dialog.Owner = parentWindow;
-                dialog.ShowInTaskbar = false;
-            }
+            dialog.Owner = parentWindow;
+            dialog.ShowInTaskbar = false;
 
             string result = null;
             dialog.OnResult += otp => onOtpResult(dialog, result = otp);
