@@ -28,27 +28,45 @@ public class IndexUpdateCommand
 {
     public static readonly Command Command = new("index-update", "Update patch index files from internet.");
 
-    private static readonly Option<string?> PatchRootPathOption = new(
-        "-r",
-        () => null,
-        "Root directory of patch file hierarchy. Defaults to a directory under the temp directory of the current user.");
+    private static readonly Option<string?> PatchRootPathOption = new("-r")
+    {
+        Description = "Root directory of patch file hierarchy. Defaults to a directory under the temp directory of the current user."
+    };
 
-    private static readonly Option<string?> UserNameOption = new("-u", () => null, "User ID.");
-    private static readonly Option<string?> PasswordOption = new("-p", () => null, "User password.");
-    private static readonly Option<string?> OtpOption = new("-o", () => null, "User OTP.");
+    private static readonly Option<string?> UserNameOption = new("-u")
+    {
+        Description = "User ID."
+    };
 
-    private static readonly Option<bool> NoVerifyOldPatchHashOption = new("--no-verify-old-patch-hash", () => false, "Skip patch hash validation for old patch files.");
-    private static readonly Option<bool> NoVerifyNewPatchHashOption = new("--no-verify-new-patch-hash", () => false, "Skip patch hash validation for newly downloaded patch files.");
+    private static readonly Option<string?> PasswordOption = new("-p")
+    {
+        Description = "User password."
+    };
+
+    private static readonly Option<string?> OtpOption = new("-o")
+    {
+        Description = "User OTP."
+    };
+
+    private static readonly Option<bool> NoVerifyOldPatchHashOption = new("--no-verify-old-patch-hash")
+    {
+        Description = "Skip patch hash validation for old patch files."
+    };
+
+    private static readonly Option<bool> NoVerifyNewPatchHashOption = new("--no-verify-new-patch-hash")
+    {
+        Description = "Skip patch hash validation for newly downloaded patch files."
+    };
 
     static IndexUpdateCommand()
     {
-        Command.AddOption(PatchRootPathOption);
-        Command.AddOption(UserNameOption);
-        Command.AddOption(PasswordOption);
-        Command.AddOption(OtpOption);
-        Command.AddOption(NoVerifyOldPatchHashOption);
-        Command.AddOption(NoVerifyNewPatchHashOption);
-        Command.SetHandler(x => new IndexUpdateCommand(x.ParseResult).Handle(x.GetCancellationToken()));
+        Command.Options.Add(PatchRootPathOption);
+        Command.Options.Add(UserNameOption);
+        Command.Options.Add(PasswordOption);
+        Command.Options.Add(OtpOption);
+        Command.Options.Add(NoVerifyOldPatchHashOption);
+        Command.Options.Add(NoVerifyNewPatchHashOption);
+        Command.SetAction((parseResult, cancellationToken) => new IndexUpdateCommand(parseResult).Handle(cancellationToken));
     }
 
     private readonly TempSettings settings;
@@ -67,13 +85,13 @@ public class IndexUpdateCommand
     private IndexUpdateCommand(ParseResult parseResult)
     {
         this.settings = new(
-            new(parseResult.GetValueForOption(PatchRootPathOption)
+            new(parseResult.GetValue(PatchRootPathOption)
                 ?? Path.Combine(Path.GetTempPath(), "XIVLauncher.PatchInstaller")));
-        this.username = parseResult.GetValueForOption(UserNameOption);
-        this.password = parseResult.GetValueForOption(PasswordOption);
-        this.otp = parseResult.GetValueForOption(OtpOption);
-        this.noVerifyOldPatchHash = parseResult.GetValueForOption(NoVerifyOldPatchHashOption);
-        this.noVerifyNewPatchHash = parseResult.GetValueForOption(NoVerifyNewPatchHashOption);
+        this.username = parseResult.GetValue(UserNameOption);
+        this.password = parseResult.GetValue(PasswordOption);
+        this.otp = parseResult.GetValue(OtpOption);
+        this.noVerifyOldPatchHash = parseResult.GetValue(NoVerifyOldPatchHashOption);
+        this.noVerifyNewPatchHash = parseResult.GetValue(NoVerifyNewPatchHashOption);
     }
 
     private async Task<int> Handle(CancellationToken cancellationToken)

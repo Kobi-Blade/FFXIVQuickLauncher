@@ -14,11 +14,11 @@ namespace XIVLauncher.PatchInstaller.Commands;
 
 public class IndexRpcTestCommand
 {
-    public static readonly Command Command = new("index-rpc-test") { IsHidden = true };
+    public static readonly Command Command = new("index-rpc-test") { Hidden = true };
 
     static IndexRpcTestCommand()
     {
-        Command.SetHandler(x => new IndexRpcTestCommand(x.ParseResult).Handle());
+        Command.SetAction(parseResult => new IndexRpcTestCommand(parseResult).Handle());
     }
 
     private IndexRpcTestCommand(ParseResult parseResult)

@@ -13,20 +13,22 @@ public class InstallCommand
 {
     public static readonly Command Command = new("install", "Install the given patch files in the specified order.");
 
-    private static readonly Argument<string> GameRootPathArgument = new(
-        "game-root",
-        "Path to a game installation, such as \"C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\\"");
-
-    private static readonly Argument<string[]> PatchFilesArgument = new("patch-file", "Path to patch file(s).")
+    private static readonly Argument<string> GameRootPathArgument = new("game-root")
     {
+        Description = "Path to a game installation, such as \"C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\\\""
+    };
+
+    private static readonly Argument<string[]> PatchFilesArgument = new("patch-file")
+    {
+        Description = "Path to patch file(s).",
         Arity = ArgumentArity.OneOrMore,
     };
 
     static InstallCommand()
     {
-        Command.AddArgument(GameRootPathArgument);
-        Command.AddArgument(PatchFilesArgument);
-        Command.SetHandler(x => new InstallCommand(x.ParseResult).Handle());
+        Command.Arguments.Add(GameRootPathArgument);
+        Command.Arguments.Add(PatchFilesArgument);
+        Command.SetAction(parseResult => new InstallCommand(parseResult).Handle());
     }
 
     private readonly string gameRootPath;
@@ -34,8 +36,8 @@ public class InstallCommand
 
     private InstallCommand(ParseResult parseResult)
     {
-        this.gameRootPath = parseResult.GetValueForArgument(GameRootPathArgument);
-        this.patchFiles = parseResult.GetValueForArgument(PatchFilesArgument);
+        this.gameRootPath = parseResult.GetValue(GameRootPathArgument)!;
+        this.patchFiles = parseResult.GetValue(PatchFilesArgument)!;
 
         // Do we have a .patch as the first argument?
         if (File.Exists(this.gameRootPath) && this.gameRootPath.EndsWith(".patch", StringComparison.OrdinalIgnoreCase))

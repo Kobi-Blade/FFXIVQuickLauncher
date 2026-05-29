@@ -16,21 +16,21 @@ namespace XIVLauncher.PatchInstaller.Commands;
 
 public class RpcCommand
 {
-    public static readonly Command Command = new("rpc") { IsHidden = true };
+    public static readonly Command Command = new("rpc") { Hidden = true };
 
     private static readonly Argument<string> ChannelNameArgument = new("channel-name");
 
     static RpcCommand()
     {
-        Command.AddArgument(ChannelNameArgument);
-        Command.SetHandler(x => new RpcCommand(x.ParseResult).Handle());
+        Command.Arguments.Add(ChannelNameArgument);
+        Command.SetAction(parseResult => new RpcCommand(parseResult).Handle());
     }
 
     private readonly string channelName;
 
     private RpcCommand(ParseResult parseResult)
     {
-        this.channelName = parseResult.GetValueForArgument(ChannelNameArgument);
+        this.channelName = parseResult.GetValue(ChannelNameArgument)!;
     }
 
     private Task<int> Handle()

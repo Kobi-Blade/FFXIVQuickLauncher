@@ -23,22 +23,32 @@ public class IndexCreateIntegrityCommand
 {
     public static readonly Command Command = new("index-create-integrity", "Create integrity check data for a game installation.");
 
-    private static readonly Argument<string> PatchRootPathArgument = new("patch-root-path", "Path to a folder containing relevant patch files.");
+    private static readonly Argument<string> PatchRootPathArgument = new("patch-root-path")
+    {
+        Description = "Path to a folder containing relevant patch files."
+    };
 
-    private static readonly Argument<string[]> PatchIndexFilesArgument = new("patch-index-files", "Path to a patch index file. (*.patch.index)");
+    private static readonly Argument<string[]> PatchIndexFilesArgument = new("patch-index-files")
+    {
+        Description = "Path to a patch index file. (*.patch.index)"
+    };
 
-    private static readonly Option<int> ThreadCountOption = new(
-        ["-t", "--threads"],
-        () => Math.Min(Environment.ProcessorCount, 8),
-        "Number of threads. Specifying 0 will use all available cores.");
+    private static readonly Option<int> ThreadCountOption = new("--threads", "-t")
+    {
+        Description = "Number of threads. Specifying 0 will use all available cores."
+    };
 
     static IndexCreateIntegrityCommand()
     {
-        Command.AddArgument(PatchRootPathArgument);
-        Command.AddArgument(PatchIndexFilesArgument);
-        ThreadCountOption.AddValidator(x => x.ErrorMessage = x.GetValueOrDefault<int>() >= 0 ? null : "Must be 0 or more");
-        Command.AddOption(ThreadCountOption);
-        Command.SetHandler(x => new IndexCreateIntegrityCommand(x.ParseResult).Handle(x.GetCancellationToken()));
+        Command.Arguments.Add(PatchRootPathArgument);
+        Command.Arguments.Add(PatchIndexFilesArgument);
+        ThreadCountOption.Validators.Add(result =>
+        {
+            if (result.GetValueOrDefault<int>() < 0)
+                result.AddError("Must be 0 or more");
+        });
+        Command.Options.Add(ThreadCountOption);
+        Command.SetAction((parseResult, cancellationToken) => new IndexCreateIntegrityCommand(parseResult).Handle(cancellationToken));
     }
 
     private readonly string patchRootPath;
@@ -47,9 +57,9 @@ public class IndexCreateIntegrityCommand
 
     private IndexCreateIntegrityCommand(ParseResult parseResult)
     {
-        this.patchRootPath = parseResult.GetValueForArgument(PatchRootPathArgument);
-        this.patchIndexFiles = parseResult.GetValueForArgument(PatchIndexFilesArgument);
-        this.threadCount = parseResult.GetValueForOption(ThreadCountOption);
+        this.patchRootPath = parseResult.GetValue(PatchRootPathArgument)!;
+        this.patchIndexFiles = parseResult.GetValue(PatchIndexFilesArgument)!;
+        this.threadCount = parseResult.GetValue(ThreadCountOption);
         if (this.threadCount == 0)
             this.threadCount = Environment.ProcessorCount;
         Debug.Assert(this.threadCount > 0);
