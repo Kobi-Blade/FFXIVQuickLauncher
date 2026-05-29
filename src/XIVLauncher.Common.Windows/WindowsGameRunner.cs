@@ -21,21 +21,33 @@ public class WindowsGameRunner : IGameRunner
 
     public Process Start(string path, string workingDirectory, string arguments, IDictionary<string, string> environment, DpiAwareness dpiAwareness)
     {
+        var compat = "RunAsInvoker ";
+        compat += dpiAwareness switch
+        {
+            DpiAwareness.Aware => "HighDPIAware",
+            DpiAwareness.Unaware => "DPIUnaware",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        environment.Add("__COMPAT_LAYER", compat);
+
         if (dalamudOk)
         {
-            var compat = "RunAsInvoker ";
-            compat += dpiAwareness switch {
-                DpiAwareness.Aware => "HighDPIAware",
-                DpiAwareness.Unaware => "DPIUnaware",
-                _ => throw new ArgumentOutOfRangeException()
-            };
-            environment.Add("__COMPAT_LAYER", compat);
-
             return this.dalamudLauncher.Run(new FileInfo(path), arguments, environment);
         }
-        else
+
+        var psi = new ProcessStartInfo
         {
-            return NativeAclFix.LaunchGame(workingDirectory, path, arguments, environment, dpiAwareness, process => { });
+            FileName = path,
+            WorkingDirectory = workingDirectory,
+            Arguments = arguments,
+            UseShellExecute = false,
+        };
+
+        foreach (var kvp in environment)
+        {
+            psi.EnvironmentVariables[kvp.Key] = kvp.Value;
         }
+
+        return Process.Start(psi)!;
     }
 }
