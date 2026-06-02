@@ -1,23 +1,24 @@
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 using XIVLauncher.Common.Patching.IndexedZiPatch;
 
 namespace XIVLauncher.PatchInstaller.Commands;
 
 public class IndexRpcTestCommand
 {
-    public static readonly Command Command = new("index-rpc-test") { Hidden = true };
+    public static readonly Command Command = new("index-rpc-test") { IsHidden = true };
 
     static IndexRpcTestCommand()
     {
-        Command.SetAction(parseResult => new IndexRpcTestCommand(parseResult).Handle());
+        Command.SetHandler(x => new IndexRpcTestCommand(x.ParseResult).Handle());
     }
 
     private IndexRpcTestCommand(ParseResult parseResult)

@@ -1,8 +1,9 @@
-using Serilog;
-using Serilog.Events;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.IO;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Events;
 using XIVLauncher.Common;
 using XIVLauncher.Common.Patching.IndexedZiPatch;
 
@@ -10,7 +11,7 @@ namespace XIVLauncher.PatchInstaller.Commands;
 
 public class IndexRpcCommand
 {
-    public static readonly Command Command = new("index-rpc") { Hidden = true };
+    public static readonly Command Command = new("index-rpc") { IsHidden = true };
 
     private static readonly Argument<int> MonitorProcessIDArgument = new("process-id");
 
@@ -18,9 +19,9 @@ public class IndexRpcCommand
 
     static IndexRpcCommand()
     {
-        Command.Arguments.Add(MonitorProcessIDArgument);
-        Command.Arguments.Add(ChannelNameArgument);
-        Command.SetAction(parseResult => new IndexRpcCommand(parseResult).Handle());
+        Command.AddArgument(MonitorProcessIDArgument);
+        Command.AddArgument(ChannelNameArgument);
+        Command.SetHandler(x => new IndexRpcCommand(x.ParseResult).Handle());
     }
 
     private readonly int monitorProcessId;
@@ -28,8 +29,8 @@ public class IndexRpcCommand
 
     private IndexRpcCommand(ParseResult parseResult)
     {
-        this.monitorProcessId = parseResult.GetValue(MonitorProcessIDArgument);
-        this.channelName = parseResult.GetValue(ChannelNameArgument)!;
+        this.monitorProcessId = parseResult.GetValueForArgument(MonitorProcessIDArgument);
+        this.channelName = parseResult.GetValueForArgument(ChannelNameArgument);
     }
 
     private Task<int> Handle()

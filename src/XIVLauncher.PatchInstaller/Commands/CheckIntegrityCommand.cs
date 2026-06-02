@@ -1,9 +1,8 @@
-using Newtonsoft.Json;
-using Serilog;
 using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,6 +10,8 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Serilog;
 using XIVLauncher.Common.Game;
 
 namespace XIVLauncher.PatchInstaller.Commands;
@@ -19,39 +20,33 @@ public class CheckIntegrityCommand
 {
     public static readonly Command Command = new("check-integrity");
 
-    private static readonly Argument<string> GameRootPathArgument = new("game-path")
-    {
-        Description = "Root folder of a game installation, such as \"C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\""
-    };
+    private static readonly Argument<string> GameRootPathArgument = new(
+        "game-path",
+        "Root folder of a game installation, such as \"C:\\Program Files (x86)\\SquareEnix\\FINAL FANTASY XIV - A Realm Reborn\"");
 
-    private static readonly Option<string?> IntegrityFilePathOption = new("--integrity-file", "-f")
-    {
-        Description = $"Path to integrity check file. Leave it empty to download from: {new Uri(IntegrityCheck.INTEGRITY_CHECK_BASE_URL).Host}"
-    };
+    private static readonly Option<string> IntegrityFilePathOption = new(
+        ["-f", "--integrity-file"],
+        $"Path to integrity check file. Leave it empty to download from: {new Uri(IntegrityCheck.INTEGRITY_CHECK_BASE_URL).Host}");
 
-    private static readonly Option<bool> IndexOnlyOption = new("--index-only", "-i")
-    {
-        Description = "Only check index files",
-    };
+    private static readonly Option<bool> IndexOnlyOption = new(
+        ["-i", "--index-only"],
+        () => false,
+        $"Path to integrity check file. Leave it empty to download from: {new Uri(IntegrityCheck.INTEGRITY_CHECK_BASE_URL).Host}");
 
-    private static readonly Option<int> ThreadCountOption = new("--threads", "-t")
-    {
-        Description = "Number of threads. Specifying 0 will use all available cores."
-    };
+    private static readonly Option<int> ThreadCountOption = new(
+        ["-t", "--threads"],
+        () => Math.Min(Environment.ProcessorCount, 8),
+        "Number of threads. Specifying 0 will use all available cores.");
 
     static CheckIntegrityCommand()
     {
-        Command.Aliases.Add("check-integrity");
-        Command.Arguments.Add(GameRootPathArgument);
-        Command.Options.Add(IntegrityFilePathOption);
-        Command.Options.Add(IndexOnlyOption);
-        ThreadCountOption.Validators.Add(result =>
-        {
-            if (result.GetValueOrDefault<int>() < 0)
-                result.AddError("Must be 0 or more");
-        });
-        Command.Options.Add(ThreadCountOption);
-        Command.SetAction((parseResult, cancellationToken) => new CheckIntegrityCommand(parseResult).Handle(cancellationToken));
+        Command.AddAlias("check-integrity");
+        Command.AddArgument(GameRootPathArgument);
+        Command.AddOption(IntegrityFilePathOption);
+        Command.AddOption(IndexOnlyOption);
+        ThreadCountOption.AddValidator(x => x.ErrorMessage = x.GetValueOrDefault<int>() >= 0 ? null : "Must be 0 or more");
+        Command.AddOption(ThreadCountOption);
+        Command.SetHandler(x => new CheckIntegrityCommand(x.ParseResult).Handle(x.GetCancellationToken()));
     }
 
     private readonly string gameRootPath;
@@ -61,10 +56,10 @@ public class CheckIntegrityCommand
 
     private CheckIntegrityCommand(ParseResult parseResult)
     {
-        this.gameRootPath = parseResult.GetValue(GameRootPathArgument)!;
-        this.integrityFilePath = parseResult.GetValue(IntegrityFilePathOption);
-        this.indexOnly = parseResult.GetValue(IndexOnlyOption);
-        this.threadCount = parseResult.GetValue(ThreadCountOption);
+        this.gameRootPath = parseResult.GetValueForArgument(GameRootPathArgument);
+        this.integrityFilePath = parseResult.GetValueForOption(IntegrityFilePathOption);
+        this.indexOnly = parseResult.GetValueForOption(IndexOnlyOption);
+        this.threadCount = parseResult.GetValueForOption(ThreadCountOption);
         if (this.threadCount == 0)
             this.threadCount = Environment.ProcessorCount;
         Debug.Assert(this.threadCount > 0);

@@ -1,4 +1,5 @@
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.Threading.Tasks;
 using XIVLauncher.Common.Patching.IndexedZiPatch;
 
@@ -8,22 +9,18 @@ public class IndexCreateCommand
 {
     public static readonly Command Command = new("index-create", "Create patch index files according to a patch chain specified from arguments.");
 
-    private static readonly Argument<int> ExpacVersionArgument = new("expac-version")
-    {
-        Description = "Expansion pack version in an integer. -1 = boot, 0 = base game, 1 = Heavensward, etc."
-    };
+    private static readonly Argument<int> ExpacVersionArgument = new("expac-version", "Expansion pack version in an integer. -1 = boot, 0 = base game, 1 = Heavensward, etc.");
 
-    private static readonly Argument<string[]> PatchFilesArgument = new("patch-file")
+    private static readonly Argument<string[]> PatchFilesArgument = new("patch-file", "Path to patch file(s).")
     {
-        Description = "Path to patch file(s).",
         Arity = ArgumentArity.OneOrMore,
     };
 
     static IndexCreateCommand()
     {
-        Command.Arguments.Add(ExpacVersionArgument);
-        Command.Arguments.Add(PatchFilesArgument);
-        Command.SetAction(parseResult => new IndexCreateCommand(parseResult).Handle());
+        Command.AddArgument(ExpacVersionArgument);
+        Command.AddArgument(PatchFilesArgument);
+        Command.SetHandler(x => new IndexCreateCommand(x.ParseResult).Handle());
     }
 
     private readonly int expacVersion;
@@ -31,8 +28,8 @@ public class IndexCreateCommand
 
     private IndexCreateCommand(ParseResult parseResult)
     {
-        this.expacVersion = parseResult.GetValue(ExpacVersionArgument);
-        this.patchFiles = parseResult.GetValue(PatchFilesArgument)!;
+        this.expacVersion = parseResult.GetValueForArgument(ExpacVersionArgument);
+        this.patchFiles = parseResult.GetValueForArgument(PatchFilesArgument);
     }
 
     private async Task<int> Handle()
