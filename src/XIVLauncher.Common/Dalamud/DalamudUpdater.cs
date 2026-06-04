@@ -427,17 +427,21 @@ namespace XIVLauncher.Common.Dalamud
             if (!addonPath.Exists)
                 return;
 
+            if (!Version.TryParse(currentVer, out Version current))
+                return;
+
             foreach (var directory in addonPath.GetDirectories())
             {
-                if (directory.Name == "dev" || directory.Name == currentVer) continue;
+                if (Version.TryParse(directory.Name, out Version dirVer) && dirVer < current)
+                {
+                    try
+                    {
+                        directory.Delete(true);
+                    }
+                    catch
+                    {
 
-                try
-                {
-                    directory.Delete(true);
-                }
-                catch
-                {
-                    // ignored
+                    }
                 }
             }
         }
