@@ -131,6 +131,8 @@ namespace XIVLauncher.Common.Game.Patch
                 }
             }
 
+            File.Create(aria2LogFile.FullName).Dispose();
+
             this.installer.StartIfNeeded(external);
             this.installer.WaitOnHello();
 

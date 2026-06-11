@@ -67,6 +67,7 @@ namespace XIVLauncher.Common.Game.Patch
 
                 try
                 {
+                    File.Create(Path.Combine(Paths.RoamingPath, "patcher.log")).Dispose();
                     Process.Start(startInfo);
                 }
                 catch (Exception ex)

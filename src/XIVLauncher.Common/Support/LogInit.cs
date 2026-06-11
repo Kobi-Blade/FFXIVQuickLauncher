@@ -2,6 +2,7 @@ using CommandLine;
 using Serilog;
 using Serilog.Enrichers.Sensitive;
 using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 
 namespace XIVLauncher.Common.Support;
@@ -39,20 +40,14 @@ public static class LogInit
 
         var parsed = result?.Value ?? new LogOptions();
 
-        if (!string.IsNullOrEmpty(parsed.LogPath))
+        var logPath = !string.IsNullOrEmpty(parsed.LogPath) ? parsed.LogPath : defaultLogPath;
+
+        File.Create(logPath).Dispose();
+
+        config.WriteTo.Async(a =>
         {
-            config.WriteTo.Async(a =>
-            {
-                a.File(parsed.LogPath);
-            });
-        }
-        else
-        {
-            config.WriteTo.Async(a =>
-            {
-                a.File(defaultLogPath);
-            });
-        }
+            a.File(logPath);
+        });
 
 #if DEBUG
         config.WriteTo.Debug();
