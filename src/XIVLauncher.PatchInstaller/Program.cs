@@ -3,6 +3,7 @@ using System.CommandLine;
 using System.Threading.Tasks;
 using Serilog;
 using Serilog.Events;
+using XIVLauncher.Common;
 using XIVLauncher.PatchInstaller.Commands;
 
 namespace XIVLauncher.PatchInstaller;
@@ -13,6 +14,7 @@ public static class Program
     {
         Log.Logger = new LoggerConfiguration()
                      .WriteTo.Console(standardErrorFromLevel: LogEventLevel.Fatal)
+                     .WriteTo.Async(a => a.File(Paths.XIVLauncherLogPath, shared: true))
                      .WriteTo.Debug()
                      .MinimumLevel.Verbose()
                      .CreateLogger();

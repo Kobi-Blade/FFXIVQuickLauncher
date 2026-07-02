@@ -17,7 +17,7 @@ public static class Program
         try
         {
             LogInit.Setup(
-                Path.Combine(Paths.RoamingPath, "output.log"),
+                Paths.XIVLauncherLogPath,
                 Environment.GetCommandLineArgs());
 
             Log.Information("========================================================");

@@ -37,7 +37,7 @@ public class IndexRpcCommand
     {
         Log.Logger = new LoggerConfiguration()
                      .WriteTo.Console(standardErrorFromLevel: LogEventLevel.Fatal)
-                     .WriteTo.File(Path.Combine(Paths.RoamingPath, "patcher.log"))
+                     .WriteTo.Async(a => a.File(Paths.XIVLauncherLogPath, shared: true))
                      .WriteTo.Debug()
                      .MinimumLevel.Verbose()
                      .CreateLogger();

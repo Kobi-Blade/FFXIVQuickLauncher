@@ -14,6 +14,8 @@ namespace XIVLauncher.Common
 
         public static string ResourcesPath => Path.Combine(AppContext.BaseDirectory, "Resources");
 
+        public static string XIVLauncherLogPath => Path.Combine(RoamingPath, "XIVLauncher.log");
+
         public static void OverrideRoamingPath(string path)
         {
             RoamingPath = Environment.ExpandEnvironmentVariables(path);

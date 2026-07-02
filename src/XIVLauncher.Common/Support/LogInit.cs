@@ -46,7 +46,7 @@ public static class LogInit
 
         config.WriteTo.Async(a =>
         {
-            a.File(logPath);
+            a.File(logPath, shared: true);
         });
 
 #if DEBUG

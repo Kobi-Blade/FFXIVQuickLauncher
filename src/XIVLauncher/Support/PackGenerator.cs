@@ -19,15 +19,13 @@ namespace XIVLauncher.Support
             troubleEntry.Write(troubleBytes, 0, troubleBytes.Length);
             troubleEntry.Close();
 
-            var xlLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "output.log"));
-            var patcherLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "patcher.log"));
+            var launcherLogFile = new FileInfo(Paths.XIVLauncherLogPath);
             var dalamudLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "dalamud.log"));
             var dalamudInjectorLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "dalamud.injector.log"));
             var dalamudBootLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "dalamud.boot.log"));
             var ariaLogFile = new FileInfo(Path.Combine(Paths.RoamingPath, "aria.log"));
 
-            AddIfExist(xlLogFile, archive);
-            AddIfExist(patcherLogFile, archive);
+            AddIfExist(launcherLogFile, archive);
             AddIfExist(dalamudLogFile, archive);
             AddIfExist(dalamudInjectorLogFile, archive);
             AddIfExist(dalamudBootLogFile, archive);

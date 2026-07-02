@@ -1351,7 +1351,7 @@ namespace XIVLauncher.Windows.ViewModel
 
             try
             {
-                return await patcher.PatchAsync(new FileInfo(Path.Combine(Paths.RoamingPath, "aria2.log"))).ConfigureAwait(false);
+                return await patcher.PatchAsync(new FileInfo(Paths.XIVLauncherLogPath)).ConfigureAwait(false);
             }
             catch (PatchInstallerException ex)
             {
